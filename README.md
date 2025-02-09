@@ -1,58 +1,121 @@
 CircleIndicator
 ===============
-A lightweight viewpager indicator like in nexus 5 launcher 
+A lightweight indicator like in nexus 5 launcher 
 
 [ ![Download](https://api.bintray.com/packages/ongakuer/maven/CircleIndicator/images/download.svg) ](https://bintray.com/ongakuer/maven/CircleIndicator/_latestVersion)
 
-![CircleIndicator](/screenshot.gif)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.relex/circleindicator/badge.svg)](https://maven-badges.herokuapp.com/maven-central/me.relex/circleindicator)
+
+<img src="/screenshot.gif" width="300">
+
+
 
 Gradle
 ------------
 
 
-
-
+##### AndroidX
 ```groovy
 dependencies {
-    compile 'me.relex:circleindicator:1.1.8@aar'
+    implementation 'me.relex:circleindicator:2.1.6'
+}
+```
+
+##### Android Support Library
+```groovy
+dependencies {
+    implementation 'me.relex:circleindicator:1.3.2'
 }
 ```
 
 
 Usage
 --------
-```xml
-	<me.relex.circleindicator.CircleIndicator
-        android:layout_width="match_parent"
-        android:layout_height="48dp"/>
+
+| Class						| Widget			|
+| --------------------------------------------- | -----------------------------	|
+| me.relex.circleindicator.CircleIndicator	| ViewPager			|
+| me.relex.circleindicator.CircleIndicator2	| RecyclerView			|
+| me.relex.circleindicator.CircleIndicator3	| ViewPager2  *(AndroidX)*	|
+
+
+
+
+##### ViewPager (CircleIndicator)
+
+
+```java
+ViewPager viewpager = (ViewPager) view.findViewById(R.id.viewpager);
+viewpager.setAdapter(adapter);
+
+CircleIndicator indicator = (CircleIndicator) view.findViewById(R.id.indicator);
+indicator.setViewPager(viewpager);
+
+// optional
+adapter.registerDataSetObserver(indicator.getDataSetObserver());
 ```
 
-#####Properties:
 
-* `app:ci_width`
-* `app:ci_height`
-* `app:ci_margin`
-* `app:ci_drawable`
-* `app:ci_drawable_unselected`
-* `app:ci_animator`
-* `app:ci_animator_reverse`
+##### RecyclerView (CircleIndicator2)
 
 
+```java
+RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+recyclerView.setLayoutManager(layoutManager);
+recyclerView.setAdapter(adapter);
 
-License
+PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+pagerSnapHelper.attachToRecyclerView(recyclerView);
+
+CircleIndicator2 indicator = view.findViewById(R.id.indicator);
+indicator.attachToRecyclerView(recyclerView, pagerSnapHelper);
+
+// optional
+adapter.registerAdapterDataObserver(indicator.getAdapterDataObserver());
+```
+
+
+##### ViewPager2 (CircleIndicator3)
+
+```java
+ViewPager2 viewpager = view.findViewById(R.id.viewpager);
+viewpager.setAdapter(mAdapter);
+
+CircleIndicator3 indicator = view.findViewById(R.id.indicator);
+indicator.setViewPager(viewpager);
+
+// optional
+adapter.registerAdapterDataObserver(indicator.getAdapterDataObserver());
+```
+
+##### Manual control
+```java
+CircleIndicator indicator = view.findViewById(R.id.indicator);
+indicator.createIndicators(5,0);
+
+indicator.animatePageSelected(2)
+```
+
+
+
+XML Properties
 --------
+
+```xml
+<me.relex.circleindicator.CircleIndicator
+	android:id="@+id/indicator"
+	android:layout_width="match_parent"
+	android:layout_height="48dp"/>
 ```
-Copyright (C) 2014 relex
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
+| Properties			| Default Value			|
+| ----------------------------- | ----------------------------- |
+| app:ci_width	 		| 5dp				|
+| app:ci_height			| 5dp				|
+| app:ci_margin			| 5dp				|
+| app:ci_drawable		| R.drawable.white_radius  	|
+| app:ci_drawable_unselected	| R.drawable.white_radius	|
+| app:ci_animator		| R.animator.scale_with_alpha	|
+| app:ci_animator_reverse	| 0				|
+| app:ci_orientation		| horizontal			|
+| app:ci_gravity		| center     			|
